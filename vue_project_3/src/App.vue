@@ -39,7 +39,7 @@
             <td>{{ todo.id }}</td>
             <td>{{ todo.comment }}</td>
             <td><button>{{ todo.status }}</button></td>
-            <td><button>削除</button></td>
+            <td><button @click="deleteTaskBtn(todo)">削除</button></td>
           </tr>
         </tbody>
       </table>
@@ -74,6 +74,14 @@ export default {
         status: '作業中',
       });
       this.task = '';
+    },
+    // 削除ボタン押下時の処理
+    deleteTaskBtn: function(todo) {
+      let targetIndex = this.todos.indexOf(todo);
+      this.todos.splice(targetIndex, 1);
+      for (let i = targetIndex; i <this.todos.length; i++) {
+        this.todos[i].id = i;
+      }
     }
   }
 }
