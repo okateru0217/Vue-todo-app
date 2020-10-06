@@ -38,7 +38,7 @@
           :key="index">
             <td>{{ todo.id }}</td>
             <td>{{ todo.comment }}</td>
-            <td><button @click="actionStatus(todo)">{{ todo.status }}</button></td>
+            <td><button @click="switchStatus(todo)">{{ todo.status }}</button></td>
             <td><button @click="deleteTask(todo)">削除</button></td>
           </tr>
         </tbody>
@@ -84,7 +84,7 @@ export default {
       }
     },
     // statusの切り替え
-    actionStatus(todo) {
+    switchStatus(todo) {
       if (todo.status === '作業中') {
         todo.status = '完了';
       } else if (todo.status === '完了') {
@@ -106,7 +106,7 @@ export default {
           return item.status === '完了';
         }, this)
       }
-      return ''
+      return [];
     }
   }
 }
