@@ -34,12 +34,12 @@
         </thead>
         <tbody>
           <tr 
-          v-for="(todo, index) in todos" 
+          v-for="(todo, index) in filterTask" 
           :key="index">
             <td>{{ todo.id }}</td>
             <td>{{ todo.comment }}</td>
-            <td><button>{{ todo.status }}</button></td>
-            <td><button @click="deleteTaskBtn(todo)">削除</button></td>
+            <td><button @click="switchStatus(todo)">{{ todo.status }}</button></td>
+            <td><button @click="deleteTask(todo)">削除</button></td>
           </tr>
         </tbody>
       </table>
@@ -76,12 +76,37 @@ export default {
       this.task = '';
     },
     // 削除ボタン押下時の処理
-    deleteTaskBtn: function(todo) {
-      let targetIndex = this.todos.indexOf(todo);
+    deleteTask(todo) {
+      const targetIndex = this.todos.indexOf(todo);
       this.todos.splice(targetIndex, 1);
-      for (let i = targetIndex; i <this.todos.length; i++) {
+      for (let i = targetIndex; i < this.todos.length; i++) {
         this.todos[i].id = i;
       }
+    },
+    // statusの切り替え
+    switchStatus(todo) {
+      if (todo.status === '作業中') {
+        todo.status = '完了';
+      } else if (todo.status === '完了') {
+        todo.status = '作業中';
+      }
+    }
+  },
+  computed: {
+    // statusの値によって、タスクを切り替え
+    filterTask() {
+      if (this.taskStatus === 'すべて') {
+        return this.todos;
+      } else if (this.taskStatus === '作業中') {
+        return this.todos.filter((item) => {
+          return item.status === '作業中';
+        })
+      } else if (this.taskStatus === '完了') {
+        return this.todos.filter((item) => {
+          return item.status === '完了';
+        }, this)
+      }
+      return [];
     }
   }
 }
